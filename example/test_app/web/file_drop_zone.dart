@@ -1,19 +1,17 @@
-import 'dart:async';
-
 import 'dart:html'; // ignore: avoid_web_libraries_in_flutter
 import 'dart:typed_data';
+
 import 'package:tekartik_common_utils/common_utils_import.dart';
 
-bool _debugLog = devWarning(true);
+bool _debugLog = false; // devWarning(true);
 
-class FileDropZoneWidget  {
-
-  StreamSubscription<MouseEvent> _onDragOverSubscription;
-  StreamSubscription<MouseEvent> _onDropSubscription;
-  StreamSubscription<MouseEvent> _onDragLeaveSubscription;
-  StreamSubscription<Event> _fileSelectionSubscription;
+class FileDropZoneWidget {
+  StreamSubscription<MouseEvent>? _onDragOverSubscription;
+  StreamSubscription<MouseEvent>? _onDropSubscription;
+  StreamSubscription<MouseEvent>? _onDragLeaveSubscription;
+  StreamSubscription<Event>? _fileSelectionSubscription;
   final _dragStateStreamController = StreamController<_DragState>.broadcast();
-  final _pointStreamController = StreamController<Point<double>>.broadcast();
+  final _pointStreamController = StreamController<Point<double>?>.broadcast();
 
   void _onDragOver(MouseEvent value) {
     if (_debugLog) {
@@ -21,11 +19,9 @@ class FileDropZoneWidget  {
     }
     value.stopPropagation();
     value.preventDefault();
-    this
-        ._pointStreamController
-        .sink
+    _pointStreamController.sink
         .add(Point<double>(value.layer.x.toDouble(), value.layer.y.toDouble()));
-    this._dragStateStreamController.sink.add(_DragState.dragging);
+    _dragStateStreamController.sink.add(_DragState.dragging);
   }
 
   void _onDrop(MouseEvent value) {
@@ -35,19 +31,14 @@ class FileDropZoneWidget  {
     value.stopPropagation();
     value.preventDefault();
     _pointStreamController.sink.add(null);
-    _addFiles(value.dataTransfer.files);
+    _addFiles(value.dataTransfer.files!);
   }
 
   void _onDragLeave(MouseEvent value) {
     if (_debugLog) {
       print('_onDragLeave: $value');
     }
-    this._dragStateStreamController.sink.add(_DragState.notDragging);
-  }
-
-  void _fileSelection(Event value) {
-    print(value);
-    // _addFiles((value.target as FileUploadInputElement).files);
+    _dragStateStreamController.sink.add(_DragState.notDragging);
   }
 
   void _addFiles(List<File> newFiles) {
@@ -55,8 +46,8 @@ class FileDropZoneWidget  {
     var lock = Lock();
     var index = 0;
     void _stream() {
-          () async {
-        var data = reader?.result;
+      () async {
+        var data = reader.result;
         if (data is Uint8List) {
           Uint8List sub;
           var newIndex = data.length;
@@ -110,19 +101,18 @@ class FileDropZoneWidget  {
   }
 
   void init() {
-    _onDragOverSubscription = document.body.onDragOver.listen(_onDragOver);
-    _onDropSubscription = document.body.onDrop.listen(_onDrop);
-    _onDragLeaveSubscription =
-        document.body.onDragLeave.listen(_onDragLeave);
+    _onDragOverSubscription = document.body!.onDragOver.listen(_onDragOver);
+    _onDropSubscription = document.body!.onDrop.listen(_onDrop);
+    _onDragLeaveSubscription = document.body!.onDragLeave.listen(_onDragLeave);
     //this._inputElement = FileUploadInputElement();//..style.display = 'none';
     //this._fileSelectionSubscription = this._inputElement.onChange.listen(_fileSelection);
   }
 
   void dispose() {
-    _onDropSubscription.cancel();
-    _onDragOverSubscription.cancel();
-    _onDragLeaveSubscription.cancel();
-    _fileSelectionSubscription.cancel();
+    _onDropSubscription?.cancel();
+    _onDragOverSubscription?.cancel();
+    _onDragLeaveSubscription?.cancel();
+    _fileSelectionSubscription?.cancel();
     _dragStateStreamController.close();
     _pointStreamController.close();
     //super.dispose();
