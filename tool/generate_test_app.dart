@@ -1,5 +1,6 @@
-import 'package:process_run/shell_run.dart';
 import 'dart:io';
+
+import 'package:process_run/shell_run.dart';
 
 var testAppDir = 'example/test_app';
 var testAppShell = Shell(workingDirectory: testAppDir);

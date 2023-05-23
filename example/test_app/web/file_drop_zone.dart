@@ -1,6 +1,7 @@
 import 'dart:html'; // ignore: avoid_web_libraries_in_flutter
 import 'dart:typed_data';
 
+// ignore: depend_on_referenced_packages
 import 'package:tekartik_common_utils/common_utils_import.dart';
 
 bool _debugLog = false; // devWarning(true);
@@ -45,7 +46,7 @@ class FileDropZoneWidget {
     var reader = FileReader();
     var lock = Lock();
     var index = 0;
-    void _stream() {
+    void stream() {
       () async {
         var data = reader.result;
         if (data is Uint8List) {
@@ -80,7 +81,7 @@ class FileDropZoneWidget {
         if (reader.result is List<int>) {
           print((reader.result as List).length);
         }
-        _stream();
+        stream();
       });
       reader.onLoadEnd.listen((pe) {
         print('end ${pe.loaded}/${pe.total}');
@@ -88,7 +89,7 @@ class FileDropZoneWidget {
         if (reader.result is List<int>) {
           print((reader.result as List).length);
         }
-        _stream();
+        stream();
       });
     }
     /*
