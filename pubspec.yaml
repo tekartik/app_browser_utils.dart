@@ -16,4 +16,4 @@ dependencies:
 
 dev_dependencies:
   test: ^1.6.0
-  dev_test:
+  dev_build:
