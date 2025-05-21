@@ -21,8 +21,9 @@ class FileDropZoneWidget {
     }
     value.stopPropagation();
     value.preventDefault();
-    _pointStreamController.sink
-        .add(Point<double>(value.layer.x.toDouble(), value.layer.y.toDouble()));
+    _pointStreamController.sink.add(
+      Point<double>(value.layer.x.toDouble(), value.layer.y.toDouble()),
+    );
     _dragStateStreamController.sink.add(_DragState.dragging);
   }
 
@@ -119,7 +120,8 @@ class FileDropZoneWidget {
     _pointStreamController.close();
     //super.dispose();
   }
-/*
+
+  /*
   @override
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (BuildContext context, BoxConstraints boxConstraints) => Stack(
@@ -236,7 +238,4 @@ class FileDropZoneWidget {
  */
 }
 
-enum _DragState {
-  dragging,
-  notDragging,
-}
+enum _DragState { dragging, notDragging }

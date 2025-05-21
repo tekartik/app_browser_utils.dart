@@ -4,7 +4,7 @@ description: Common app browser utils.
 # homepage: https://www.example.com
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.7.0
 
 dependencies:
   path: ">=1.9.0"
@@ -16,5 +16,5 @@ dependencies:
 
 dev_dependencies:
   test: ">=1.24.0"
-  dev_build: ">=1.1.0+2"
+  dev_build: ">=1.1.2"
   web:
